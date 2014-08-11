@@ -2,7 +2,10 @@ package com.cromagnon.pinterest.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by badiere.eric on 8/9/14.
@@ -14,6 +17,7 @@ public class Login {
     public Login(WebDriver webDriver, WebDriverWait webDriverWait){
         this.webDriver = webDriver;
         this.webDriverWait = webDriverWait;
+        webDriver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         String value = webDriver.findElement(By.tagName("h1")).getText();
         if (!value.equals("Log In to Pinterest")){
@@ -35,7 +39,7 @@ public class Login {
 
     public PinterestPage submitLogin(){
         webDriver.findElement(By.xpath("//button[@type='submit']")).click();
-        webDriverWait.until((com.google.common.base.Function<? super WebDriver, Object>) webDriver.findElement(By.name("search")));
+        webDriverWait.until(ExpectedConditions.presenceOfElementLocated(By.name("search")));
         return new PinterestPage(webDriver, webDriverWait);
     }
 }
