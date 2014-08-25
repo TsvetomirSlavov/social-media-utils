@@ -1,9 +1,13 @@
 package com.cromagnon.pinterest.pages;
 
+import com.cromagnon.pinterest.pages.buttons.FollowButton;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by badiere.eric on 8/9/14.
@@ -40,5 +44,28 @@ public class PinterestPage {
     public PinterestPage clickPinners(){
         webDriver.findElement(By.linkText("Pinners")).click();
         return this;
+    }
+
+    public PinterestPage clickFollowButtone(int dailyLimit){
+
+        return this;
+    }
+
+    public Integer getNumberOfFollowButtons(){
+        List<WebElement> webElements = webDriver.findElements(By.cssSelector("button.UserFollowButton"));
+        return webElements.size();
+
+    }
+    public List<FollowButton> getFollowButtons(){
+        List<WebElement> webElements = webDriver.findElements(By.cssSelector("button.UserFollowButton"));
+        List<FollowButton> followButtons = new ArrayList<>();
+        for (WebElement button : webElements){
+            FollowButton followButton = new FollowButton(
+                    webDriver,
+                    webDriverWait,
+                    button);
+            followButtons.add(followButton);
+        }
+        return followButtons;
     }
 }

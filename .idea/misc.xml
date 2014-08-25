@@ -7,7 +7,7 @@
     <file type="web" url="file://$PROJECT_DIR$" />
   </component>
   <component name="IdProvider" IDEtalkID="9225C1B624371B71AD8144C569482C65" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_7" assert-keyword="true" jdk-15="true" project-jdk-name="1.7" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
   <component name="masterDetails">
