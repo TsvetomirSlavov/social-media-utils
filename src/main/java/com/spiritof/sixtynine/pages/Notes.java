@@ -21,25 +21,13 @@ public class Notes {
 
 
     public void click(){
-        WebElement follow = null;
         int cellCount = 0;
-        for (WebElement link : followLinks) {
-            try {
-                follow = link.findElement(By.className("follow"));
+        for (WebElement follow : followLinks) {
+            if (follow.isDisplayed()) {
                 cellCount++;
-                System.out.println("Log: cellCount: " + cellCount);
-            } catch (NoSuchElementException nsee){
-                cellCount++;
-                System.out.println("Log: cellCount: " + cellCount);
-                continue;
-            } catch (StaleElementReferenceException sree){
-                cellCount++;
-                System.out.println("Log: cellCount: " + cellCount);
-                continue;
+                follow.click();
+                System.out.println("Log Click " + cellCount);
             }
-
-            if (follow.isDisplayed()) follow.click();
-            System.out.println("DEBUG: CLick");
         }
     }
 

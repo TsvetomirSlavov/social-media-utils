@@ -22,10 +22,12 @@ public class TumblerFollowers {
 
 
         Login login = new Login(webDriver, webDriverWait);
-        login.typeUserEmail("estar6302@gmail.com");
-        login.typeUserPassword("Zosia2014");
+        //login.typeUserEmail("estar6302@gmail.com");
+        login.typeUserEmail(args[0]);
+        //login.typeUserPassword("Zosia2014");
+        login.typeUserPassword(args[1]);
         TumblrPage tumblrPage = login.submitLogin();
-        tumblrPage.clickFollowers(args[0]);
+        tumblrPage.clickFollowers();
         System.out.println("DEBUG: Whooohoo");
     }
 
