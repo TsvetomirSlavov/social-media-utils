@@ -1,9 +1,6 @@
 package com.spiritof.sixtynine.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -21,8 +18,7 @@ public class TumblrPage {
     }
 
     public void clickFollowers(String linkText){
-        List<WebElement> postContainers = webDriver.findElements(By.cssSelector("li[class='post_container']"));
-        System.out.println("DEBUG: number of caontainers: " + postContainers.size());
+        List<WebElement> postContainers  = webDriver.findElements(By.cssSelector("li[class='post_container']"));
         for (WebElement postContainer : postContainers){
             //Must handle no div element.  It's legit.
             WebElement div = null;
@@ -32,19 +28,14 @@ public class TumblrPage {
             }
             catch(NoSuchElementException nsee){
                     continue;
-
             }
-            if (linkText.equals(div.getAttribute("data-tumblelog-name"))){
-                System.out.println("DEBUG: FOund it");
-                WebElement span = div.findElement(By.className("note_link_current"));
-                System.out.println("DEBUG: span: ");
-                span.click();
-                List<WebElement> follows = span.findElements(By.cssSelector("li[class='follow']"));
-                for (WebElement follow : follows){
-                    follow.click();
-                }
-
-            }
+            WebElement span = div.findElement(By.className("note_link_current"));
+            span.click();
+            WebElement postNotes = div.findElement(By.className("post_notes"));
+            WebElement notes = postNotes.findElement(By.className("notes"));
+            List<WebElement> links = notes.findElements(By.tagName("li"));
+            Notes notesDetail = new Notes(webDriver, webDriverWait, links);
+            notesDetail.click();
         }
 
     }

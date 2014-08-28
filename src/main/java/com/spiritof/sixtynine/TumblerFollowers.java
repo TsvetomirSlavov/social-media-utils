@@ -25,7 +25,7 @@ public class TumblerFollowers {
         login.typeUserEmail("estar6302@gmail.com");
         login.typeUserPassword("Zosia2014");
         TumblrPage tumblrPage = login.submitLogin();
-        tumblrPage.clickFollowers("lotusgurl");
+        tumblrPage.clickFollowers(args[0]);
         System.out.println("DEBUG: Whooohoo");
     }
 
