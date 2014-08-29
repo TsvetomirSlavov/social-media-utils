@@ -1,6 +1,9 @@
 package com.spiritof.sixtynine.pages;
 
-import org.openqa.selenium.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -29,6 +32,7 @@ public class TumblrPage {
             catch(NoSuchElementException nsee){
                 continue;
             }
+           // ((Locatable)div).g
             WebElement span = div.findElement(By.className("note_link_current"));
             span.click();
             WebElement postNotes = div.findElement(By.className("post_notes"));
@@ -36,7 +40,15 @@ public class TumblrPage {
             List<WebElement> follows = notes.findElements(By.className("follow"));
             List<WebElement> links = notes.findElements(By.tagName("li"));
             Notes notesDetail = new Notes(webDriver, webDriverWait, follows);
+            // cheap scroll
             notesDetail.click();
+            List<WebElement> followsUpdated = notes.findElements(By.className("follow"));
+            while (followsUpdated.size() > follows.size()){
+                Notes notesDetail2 = new Notes(webDriver, webDriverWait, followsUpdated);
+                notesDetail2.click();
+                follows = followsUpdated;
+                followsUpdated = notes.findElements(By.className("follow"));
+            }
         }
 
     }
