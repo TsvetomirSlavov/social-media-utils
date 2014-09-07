@@ -1,9 +1,7 @@
 package com.spiritof.sixtynine.pages;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
@@ -20,37 +18,53 @@ public class TumblrPage {
         this.webDriverWait = webDriverWait;
     }
 
-    public void clickFollowers(){
+    public void clickFollowers() throws InterruptedException {
         List<WebElement> postContainers  = webDriver.findElements(By.cssSelector("li[class='post_container']"));
+        WebElement notes = null;
         for (WebElement postContainer : postContainers){
-            //Must handle no div element.  It's legit.
-            WebElement div = null;
             try {
-                div = postContainer.findElement(By.cssSelector("div"));
+                WebElement div = postContainer.findElement(By.cssSelector("div"));
                 System.out.println("tumblr blog name: " + div.getAttribute("data-tumblelog-name"));
+                notes = getNotes(div);
             }
             catch(NoSuchElementException nsee){
                 continue;
             }
-           // ((Locatable)div).g
-            WebElement span = div.findElement(By.className("note_link_current"));
+            if (getFollows(notes)) continue;
+            WebElement glassOverlay = webDriver.findElement(By.id("glass_overlay"));
+            glassOverlay.click();
+        }
+    }
+
+    private WebElement getNotes(WebElement div){
+        //Must handle no div element.  It's legit.
+        WebElement span = div.findElement(By.className("note_link_current"));
+        if (span.isDisplayed()){
             span.click();
-            WebElement postNotes = div.findElement(By.className("post_notes"));
-            WebElement notes = postNotes.findElement(By.className("notes"));
-            List<WebElement> follows = notes.findElements(By.className("follow"));
-            List<WebElement> links = notes.findElements(By.tagName("li"));
+        }
+        WebElement postNotes = div.findElement(By.className("post_notes"));
+        return postNotes.findElement(By.className("notes"));
+    }
+
+    // change to a do while
+    private boolean getFollows(WebElement notes) throws InterruptedException {
+        List<WebElement> follows = null;
+        List<WebElement> followsUpdated = null;
+        do {
+            try {
+                follows = notes.findElements(By.className("follow"));
+            } catch (StaleElementReferenceException sere) {
+                System.out.println("Stale follows element, skipping...");
+                return true;
+            }
             Notes notesDetail = new Notes(webDriver, webDriverWait, follows);
             // cheap scroll
             notesDetail.click();
-            List<WebElement> followsUpdated = notes.findElements(By.className("follow"));
-            while (followsUpdated.size() > follows.size()){
-                Notes notesDetail2 = new Notes(webDriver, webDriverWait, followsUpdated);
-                notesDetail2.click();
-                follows = followsUpdated;
-                followsUpdated = notes.findElements(By.className("follow"));
-            }
-        }
+            webDriverWait.until(ExpectedConditions.elementToBeClickable(By.className("follow")));
+            followsUpdated = notes.findElements(By.className("follow"));
+        } while (followsUpdated.size() > follows.size());
 
+        return false;
     }
 
 }

@@ -20,7 +20,7 @@ public class Notes {
     }
 
 
-    public void click(){
+    public void click() throws InterruptedException {
         int cellCount = 0;
         for (WebElement follow : followLinks) {
             if (follow.isDisplayed()) {
@@ -29,6 +29,7 @@ public class Notes {
                 System.out.println("Log Click " + cellCount);
             }
         }
+        Thread.sleep(10000);
     }
 
 }
